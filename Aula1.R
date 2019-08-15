@@ -20,6 +20,7 @@ setwd("D:/PEI/ENGD02/2019_2/ENGD02")
 if(!require("tidyverse")) install.packages("tidyverse") ; library(tidyverse)
 if(!require("readxl")) install.packages("readxl") ; library(readxl)
 if(!require("psych")) install.packages("psych") ; library(psych)
+if(!require("plyr")) install.packages("plyr") ; library(plyr)
 
 # Criando objeto ----
 Maria <- AA
@@ -139,11 +140,31 @@ plot1 <- ggplot2::ggplot(data = dados) +
 
 plot1
 
-ggsave(file   = "plot1.png", 
-       plot1, 
-       width  = 13, 
-       height = 9,
-       dpi    = 700)
+# ggsave(file   = "plot1.png", 
+#        plot1, 
+#        width  = 13, 
+#        height = 9,
+#        dpi    = 700)
+
+# Manipulacao de dados ----
+dados
+
+table(dados$Country)
+levels(dados$Country)
+
+# library(plyr)
+plyr::count(dados$Country)
+
+# ctrl + shift + m
+# %>% 
+dados <- dados %>% 
+  dplyr::mutate(Country = as.factor(Country))
+
+levels(dados$Country)
+
+dados2 <- dados %>% 
+  dplyr::group_by(Region) %>% 
+  dplyr::summarise(Media = mean(CPI))
 
 # utilidade ----
 utils::browseURL("https://r4ds.had.co.nz/")
