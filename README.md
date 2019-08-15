@@ -7,7 +7,7 @@
 - Descritiva; 
 - ggplot2; e
   - https://www.data-to-viz.com/
-- Probabilidade
+- Probabilidade.
 
 ----
 Brenner Biasi S. Silva
