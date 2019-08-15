@@ -4,9 +4,10 @@
 ### Conteúdo:
 - Introdução ao R;
 - Manipulação básica de dados;
-- Descritiva; e 
-- ggplot2.
-
+- Descritiva; 
+- ggplot2; e
+  - https://www.data-to-viz.com/
+- Probabilidade
 
 ----
 Brenner Biasi S. Silva
