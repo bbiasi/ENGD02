@@ -21,6 +21,7 @@ if(!require("tidyverse")) install.packages("tidyverse") ; library(tidyverse)
 if(!require("readxl")) install.packages("readxl") ; library(readxl)
 if(!require("psych")) install.packages("psych") ; library(psych)
 if(!require("plyr")) install.packages("plyr") ; library(plyr)
+if(!require("plotly")) install.packages("plotly") ; library(plotly)
 
 # Criando objeto ----
 Maria <- AA
@@ -165,6 +166,33 @@ levels(dados$Country)
 dados2 <- dados %>% 
   dplyr::group_by(Region) %>% 
   dplyr::summarise(Media = mean(CPI))
+# View(dados2)
+
+dados3 <- dados %>% 
+  dplyr::mutate(HDI = as.numeric(as.character(HDI)),
+                Country = as.factor(Country))
+
+plot2 <- ggplot2::ggplot(dados3) +
+  geom_point(aes(x = Country, y = HDI, size = CPI, alpha = CPI, shape = Region)) +
+  facet_wrap(~Region)
+
+plot2
+
+plot3 <- ggplot2::ggplot(dados3) +
+  geom_point(aes(x = Country, y = HDI, size = CPI,
+                 col = CPI))
+
+plot3
+
+plot4 <- ggplot2::ggplot(dados3) +
+  geom_point(aes(HDI, CPI, shape = Region, col = Country), show.legend = F)
+
+plot4 <- plot4 +
+  geom_smooth(aes(HDI, CPI))
+
+plot4
+
+plotly::ggplotly(plot4)
 
 # utilidade ----
 utils::browseURL("https://r4ds.had.co.nz/")
