@@ -19,6 +19,7 @@ setwd("D:/PEI/ENGD02/2019_2/ENGD02")
 
 if(!require("tidyverse")) install.packages("tidyverse") ; library(tidyverse)
 if(!require("readxl")) install.packages("readxl") ; library(readxl)
+if(!require("psych")) install.packages("psych") ; library(psych)
 
 # Criando objeto ----
 Maria <- AA
@@ -27,7 +28,6 @@ Maria <- AA
 Maria <- "AA"
 Maria="AA"
 Maria = "AA"
-
 
 # alt + - (traco)
 # <- 
@@ -76,6 +76,10 @@ paste0("A média é: ", media)
 
 summary(vetor)
 
+library(psych)
+aaaa <- psych::describe(df$XYZ)
+aaaa
+
 # Importando banco de dados----
 
 # install.packages("readxl")
@@ -88,7 +92,8 @@ plot(x = dados$CPI, y = dados$HDI, xlab = "CPI", ylab = "HDI")
 hist(x = dados$CPI)
 
 # Manipulacao basica de df
-library(dplyr)
+
+# library(dplyr)
 dplyr::glimpse(dados)
 
 dados <- dados %>% 
@@ -97,7 +102,7 @@ dados <- dados %>%
 hist(x = dados$CPI)
 boxplot(x = dados$CPI)
 
-library(ggplot2)
+# library(ggplot2)
 ggplot2::ggplot(data = dados) +
   #  aes = estetica
   geom_boxplot(aes(x = Region, y = CPI))
@@ -121,7 +126,7 @@ ggplot2::ggplot(data = dados) +
   geom_boxplot(aes(x = Region, y = CPI, fill = Region)) +
   geom_jitter(aes(x = Region, y = CPI, alpha = 0.3), show.legend = F)
 
-ggplot2::ggplot(data = dados) +
+plot1 <- ggplot2::ggplot(data = dados) +
   geom_boxplot(aes(x = Region, 
                    y = CPI, 
                    fill = Region),
@@ -132,8 +137,15 @@ ggplot2::ggplot(data = dados) +
               show.legend = F) +
   theme_dark()
 
+plot1
+
+ggsave(file   = "plot1.png", 
+       plot1, 
+       width  = 13, 
+       height = 9,
+       dpi    = 700)
+
 # utilidade ----
 utils::browseURL("https://r4ds.had.co.nz/")
 
 utils::browseURL("http://www.sthda.com/english/")
-
