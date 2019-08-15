@@ -4,7 +4,7 @@
 
 utils::browseURL("https://github.com/bbiasi/ENGD02/blob/master/Aula1.R")
 
-
+# Duvidas
 # ?browseURL
 
 
@@ -55,6 +55,13 @@ df <- data.frame("Coluna_1" = vetor,
 
 View(df)
 
+plot(x = df$Coluna_1, y = df$XYZ)
+
+plot(df$Coluna_1, 
+     df$XYZ)
+
+attach(df)
+plot(Coluna_1, XYZ)
 
 # Estatisticas basicas----
 media <- mean(vetor)
@@ -67,29 +74,66 @@ media; mediana
 
 paste0("A média é: ", media)
 
+summary(vetor)
+
 # Importando banco de dados----
 
-library(readxl)
-dados <- read_excel("C:/Users/Lucas Mascarenhas/Desktop/Rascunhos R/Aula - Matematica Instrumental/EconomistData.xlsx", 
-                    col_types = c("text", "numeric", "numeric", 
-                                  "numeric", "text"))
+# install.packages("readxl")
+# library(readxl)
+
+dados <- readxl::read_excel("EconomistData.xlsx")
 
 # Graficos----
-
 plot(x = dados$CPI, y = dados$HDI, xlab = "CPI", ylab = "HDI")
+hist(x = dados$CPI)
+
+# Manipulacao basica de df
+library(dplyr)
+dplyr::glimpse(dados)
+
+dados <- dados %>% 
+  dplyr::mutate(CPI = as.numeric(as.character(CPI)))
+
 hist(x = dados$CPI)
 boxplot(x = dados$CPI)
 
-# Exportando dados----
+library(ggplot2)
+ggplot2::ggplot(data = dados) +
+  #  aes = estetica
+  geom_boxplot(aes(x = Region, y = CPI))
 
-tabela <- data.frame(desvio, media, mediana, var)
-write.csv2(x = tabela, file = "tabela_saida.csv")
+ggplot2::ggplot(data = dados) +
+  geom_boxplot(aes(x = Region, y = CPI, fill = Region))
 
-# Extra----
+ggplot2::ggplot(data = dados) +
+  geom_jitter(aes(x = Region, y = CPI)) +
+  geom_boxplot(aes(x = Region, y = CPI, fill = Region))
 
-## Para acessar uma variavel dentro de um banco de dados...
-## ...utilizamos '$' apos o banco de dados de interesse
+ggplot2::ggplot(data = dados) +
+  geom_boxplot(aes(x = Region, y = CPI, fill = Region)) +
+  geom_jitter(aes(x = Region, y = CPI))
 
-media.CPI <- mean(dados$CPI)
+ggplot2::ggplot(data = dados) +
+  geom_boxplot(aes(x = Region, y = CPI, fill = Region)) +
+  geom_jitter(aes(x = Region, y = CPI, alpha = 0.3))
 
+ggplot2::ggplot(data = dados) +
+  geom_boxplot(aes(x = Region, y = CPI, fill = Region)) +
+  geom_jitter(aes(x = Region, y = CPI, alpha = 0.3), show.legend = F)
+
+ggplot2::ggplot(data = dados) +
+  geom_boxplot(aes(x = Region, 
+                   y = CPI, 
+                   fill = Region),
+               show.legend = F) +
+  geom_jitter(aes(x = Region, 
+                  y = CPI, 
+                  alpha = 0.3), 
+              show.legend = F) +
+  theme_dark()
+
+# utilidade ----
+utils::browseURL("https://r4ds.had.co.nz/")
+
+utils::browseURL("http://www.sthda.com/english/")
 
