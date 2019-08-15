@@ -6,3 +6,7 @@
 - Manipulação básica de dados;
 - Descritiva; e 
 - ggplot2.
+
+
+----
+brennerbiasiss@gmail.com
