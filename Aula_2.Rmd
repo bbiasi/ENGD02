@@ -26,9 +26,63 @@ Utilização do banco de dados *iris*.
 
 ### IRIS
 
-O *dataset* *iris* é um dos [vários disponíveis](https://vincentarelbundock.github.io/Rdatasets/datasets.html) residente no R.
+O *software* R, [vários](https://vincentarelbundock.github.io/Rdatasets/datasets.html) *datasets* estão disponibilizados de mneira residente (sem necessidade de instalação de pacotes), e o *iris* é um destes.
+\
+Para carregar o *dataset* residente é necessário apenas utilizar a função `data`. Feito isto, prosseguiremos explorando o nosso `df` (*data frame*).
 
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
+data("iris")
+View(iris)
+```
 
+\
+Perceba que o objeto `iris` já consta no seu ambiente de trabalho. E, para explorar o `df`, utilizaremos o pacote `dplyr`. 
+\
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+```
+
+É interessante lembrar que o pacote `dplyr` também pode ser largamente utilizado para manipulação e estruturação do `df`.
+\
+Caso o pacote `dplyr` não esteja instalado, favor utilizar a função `install.packages("nomedopacote")`.
+\
+
+```{r, message=FALSE, warning=FALSE}
+dplyr::glimpse(iris)
+```
+
+\
+Podemos verificar que nosso `df` é composto por 05 variáveis, sendo 04 numéricas e 01 categórica (*Species*).
+\
+As variáveis numéricas representam as medidas de "partes" das flores analisadas. Já a variável categórica apresenta a espécie de cada flor. Mas, **quantas plantas estamos analisando?**
+\
+
+```{r, message=FALSE, warning=FALSE}
+n_linhas <- nrow(iris)
+paste0("Estamos analisando ", n_linhas, " plantas íris.")
+```
+
+\
+**Quantas plantas pertencem a cada espécie?**
+\
+```{r, message=FALSE, warning=FALSE}
+table(iris$Species)
+```
+\
+É possível transformar essa informação em gráfico? Sim, mas temos que realizar manipulação de dados, e para os plots utilizaremos o pacote `ggplot2`.
+\
+```{r, message=FALSE, warning=FALSE}
+df1 <- table(iris$Species)
+df1 <- df1 %>% 
+  as.data.frame() %>% # transformacao necessaria
+  dplyr::rename("Especie" = Var1)
+# View(df1)
+
+library(ggplot2)
+
+plot1 <- ggplot(data = df1, mapping = aes(x = Especie, y = Freq)) +
+  geom_bar(stat = "identity")
+plot1
 ```
 
