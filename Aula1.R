@@ -215,6 +215,6 @@ ddd3 <- dados3 %>%
   dplyr::filter(Country == "Cambodia")
 
 # utilidade ----
+# Sites com informacoes relevantes
 utils::browseURL("https://r4ds.had.co.nz/")
-
 utils::browseURL("http://www.sthda.com/english/")
