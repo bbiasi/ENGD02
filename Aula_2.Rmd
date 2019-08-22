@@ -191,9 +191,7 @@ medias %>%
 medias %>% 
   ggplot() +
   geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
-             size = 4) +
-  geom_smooth(aes(x = Especies, y = Media))
-  
+             size = 4)
 ```
 \
 Vamos comparar com nossa amostra de plantas iris?
