@@ -18,7 +18,7 @@ pre code, pre, code {
 # ENGD 02
 ## Plano de Aula
 
-O presente material apresentado comtempla a segunda aula prática de Estatística Descritiva. Os assuntos desenvolvidos serão:
+O presente material apresentado contempla a segunda aula prática de Estatística Descritiva. Os assuntos desenvolvidos serão:
 \
 
 - Medidas de centralidade;
@@ -36,8 +36,9 @@ Para pleno andamento da atividade, os discentes deverão verificar e, se necess�
 - `dplyr`;
 - `ggplot2`;
 - `reshape2`;
-- `WVPlots`; e
-_ `cowplot`.
+- `WVPlots`;
+_ `cowplot`; e
+- `GGally`.
 
 ## Primeiro Momento
 
@@ -45,9 +46,9 @@ Utilização do banco de dados *iris*.
 
 ### IRIS
 
-O *software* R, [vários](https://vincentarelbundock.github.io/Rdatasets/datasets.html) *datasets* estão disponibilizados de mneira residente (sem necessidade de instalação de pacotes), e o *iris* é um destes.
+O *software* R, [vários](https://vincentarelbundock.github.io/Rdatasets/datasets.html) *data sets* estão disponibilizados de maneira residente (sem necessidade de instalação de pacotes), e o *iris* é um destes.
 \
-Para carregar o *dataset* residente é necessário apenas utilizar a função `data`. Feito isto, prosseguiremos explorando o nosso `df` (*data frame*).
+Para carregar o *data set* residente é necessário apenas utilizar a função `data`. Feito isto, prosseguiremos explorando o nosso `df` (*data frame*).
 
 ```{r, message=FALSE, warning=FALSE}
 data("iris")
@@ -211,7 +212,7 @@ plot1 <- medias %>%
   geom_smooth(aes(x = Especies, y = Media))
 ```
 \
-Utilizando o *dataset* completo.
+Utilizando o *data set* completo.
 \
 ```{r, message=FALSE, warning=FALSE}
 ggplot(iris) +
