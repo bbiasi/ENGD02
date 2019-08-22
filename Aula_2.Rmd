@@ -1,6 +1,6 @@
 ---
 title: "Aula 2"
-author: "Brenner Silva e Marcello Pessoa"
+author: "Brenner Silva"
 date: "22/08/2019"
 output: html_document
 ---
@@ -33,11 +33,12 @@ Para tal, serão utilizados o banco de dados [*iris*](https://en.wikipedia.org/w
 Esta aula está disponível no [RPubs](http://rpubs.com/brennerbiasi/ENGD02_Desc_01) e no [GitHub](https://github.com/bbiasi/ENGD02/blob/master/Aula_2.Rmd).
 \
 Para pleno andamento da atividade, os discentes deverão verificar e, se necessário, instalar os seguintes pacotes:
+
 - `dplyr`;
 - `ggplot2`;
 - `reshape2`;
 - `WVPlots`;
-_ `cowplot`; e
+- `cowplot`; e
 - `GGally`.
 
 ## Primeiro Momento
@@ -98,9 +99,7 @@ df1 <- df1 %>%
   as.data.frame() %>% # transformacao necessaria
   dplyr::rename("Especie" = Var1)
 # View(df1)
-
 library(ggplot2)
-
 ggplot(data = df1, mapping = aes(x = Especie, y = Freq)) +
   geom_bar(stat = "identity")
 ```
@@ -180,18 +179,15 @@ medias %>%
   geom_point(aes(x = Variaveis, y = Media)) +
   facet_wrap(~Especies) 
 # ~ => em funcao de ...
-
 medias %>% 
   ggplot() +
   geom_point(aes(x = Variaveis, y = Media)) +
   facet_wrap(~Especies) +
   theme(axis.text.x = element_text(angle = 90))
-
 medias %>% 
   ggplot() +
   geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
              size = 4)
-
 medias %>% 
   ggplot() +
   geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
@@ -226,12 +222,10 @@ ggplot(iris) +
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, col = Species, shape = Species)) +
   geom_smooth(aes(x = Sepal.Length, y = Sepal.Width), method = "lm") +
   facet_wrap(~Species)
-
 ggplot(iris) +
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, col = Species, shape = Species)) +
   geom_smooth(aes(x = Sepal.Length, y = Sepal.Width), method = "lm") +
   facet_wrap(~Species, scales = "free")
-
 ggplot(iris) +
   geom_point(aes(x = Sepal.Length, y = Petal.Length, col = Species, shape = Species)) +
   geom_smooth(aes(x = Sepal.Length, y = Petal.Length), method = "lm") +
@@ -243,16 +237,46 @@ E para plotar todos os plots?
 \
 ```{r, message=FALSE, warning=FALSE}
 library(WVPlots) 
-
 PairPlot(iris,
          colnames(iris)[1:4], 
          title = "Matriz de dispersão - Iris",
          group_var = "Species")
-
 plot2 <- PairPlot(iris,
                   colnames(iris)[1:4], 
                   title = "Matriz de dispersão - Iris",
                   group_var = "Species")
-
 ```
+\
+Boxplot e histograma no `ggplot2`.
+\
+```{r, message=FALSE, warning=FALSE}
+df2 <- iris %>% 
+  dplyr::filter(Species == "setosa")
+
+boxplot_1 <- ggplot(df2) + 
+  geom_boxplot(aes(y = Sepal.Length,x = Species),
+               color="black",fill="blue") +
+                 xlab(label = "Espécie") +
+                 ylab(label="Comprimento de Sépala")
+
+boxplot_1 <- boxplot_1 + coord_flip()
+
+hist_1 <- ggplot(df2) +
+  geom_histogram(mapping = aes(x = Sepal.Length,y= ..density..), color ="black", fill = "blue", bins = 15)+
+  geom_density(mapping = aes(x = Sepal.Length,y= ..scaled..), size = 1)+
+  xlab(label = " ")
+  ylab(label = "Densidade de Probabilidade")
+
+library(cowplot)
+
+cowplot::plot_grid(hist_1, boxplot_1, nrow = 2,
+                   rel_heights = c(2,1),scale = 1,align = "hv")
+
+ggplot(iris, aes(Sepal.Length, fill = Species)) + 
+  geom_density(alpha = 0.5) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, 0.05))) +
+  theme_minimal_hgrid(12)
+```
+
+
 
