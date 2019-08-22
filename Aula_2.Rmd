@@ -5,6 +5,16 @@ date: "22/08/2019"
 output: html_document
 ---
 
+<style>
+pre code, pre, code {
+  white-space: pre !important;
+  overflow-x: scroll !important;
+  word-break: keep-all !important;
+  word-wrap: initial !important;
+}
+</style>
+
+
 # ENGD 02
 ## Plano de Aula
 
@@ -18,7 +28,7 @@ O presente material apresentado comtempla a segunda aula prática de Estatístic
 - Visualização gráfica.
 \
 
-Para tal, serão utilizados o banco de dados [*iris*](https://en.wikipedia.org/wiki/Iris_flower_data_set) e um conjunto de dados aleatório, a ser construído durante a aula.
+Para tal, serão utilizados o banco de dados [*iris*](https://en.wikipedia.org/wiki/Iris_flower_data_set). Caso haja um tempo disponível para prolongação e maior detalhamento do conteúdo, um conjunto de dados aleatório será construído durante a aula para realização de nova análise descritiva.
 
 ## Primeiro Momento
 
@@ -81,8 +91,65 @@ df1 <- df1 %>%
 
 library(ggplot2)
 
-plot1 <- ggplot(data = df1, mapping = aes(x = Especie, y = Freq)) +
+ggplot(data = df1, mapping = aes(x = Especie, y = Freq)) +
   geom_bar(stat = "identity")
-plot1
 ```
 
+\
+Quais medidas de tendência central podem ser obtidas? 
+\
+
+```{r, message=FALSE, warning=FALSE}
+summary(iris)
+```
+
+\
+Veja que é possível também retornar apenas um valor específico (média, mediana, etc) por variável utilizando `$` ou a função `attach`.
+\
+```{r, message=FALSE, warning=FALSE}
+mean(iris$Sepal.Length)
+median(iris$Sepal.Width)
+var(iris$Petal.Length)
+sd(iris$Petal.Width)
+```
+\
+Também é possível obter essas informações por espécies (grupos), mas, um dos possíveis caminhos, é através da manipulação de dados.
+\
+Aqui está presente para a média.
+\
+```{r, message=FALSE, warning=FALSE}
+medias <- iris %>% 
+  dplyr::group_by(Species) %>% 
+  dplyr::summarise(M_sepal_leng = mean(Sepal.Length),
+                   M_sepal_wid = mean(Sepal.Width),
+                   M_petal_leng = mean(Petal.Length),
+                   M_petal_wid = mean(Petal.Width))
+View(medias)
+```
+\
+Mas, como gerar um gráfico dessas informações?
+\
+Para isso, precisamos empilhar as informações, que significa que devemos mudar o arranjo do nosso *data frame*. 
+\
+Para isso, vamos utilizar o pacote `reshape2`. Contudo, informo que o pacote citado está em desuso, já está [aposentado](https://github.com/hadley/reshape#status). O ideal é utilizar o pacote `tidyr`.
+\
+No pacote `reshape2` utilizaremos a função `melt`, e indicaremos a variável a ser conservada no *data frame*.
+\
+```{r, message=FALSE, warning=FALSE}
+library(reshape2)
+medias <- medias %>% 
+  reshape2::melt(id.vars = "Species")
+View(medias)
+```
+\
+Perceba que nosso `df` agora contém 12 *rows* e 03 *col*, com observação agrupada em função da `Species` e da `variable`. Isso tornará nosso trabalho extremamente mais fácil.
+\
+Caso desejado renomear as variáveis, uma maneira elegante de realizar esta ação é utilizando a função `rename` do pacote `dplyr`.
+\
+
+```{r, message=FALSE, warning=FALSE}
+medias <- medias %>% 
+  dplyr::rename("Especies" = Species,
+                "Variaveis" = variable,
+                "Media" = value)
+```
