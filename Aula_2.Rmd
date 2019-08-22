@@ -29,6 +29,15 @@ O presente material apresentado comtempla a segunda aula prática de Estatístic
 \
 
 Para tal, serão utilizados o banco de dados [*iris*](https://en.wikipedia.org/wiki/Iris_flower_data_set). Caso haja um tempo disponível para prolongação e maior detalhamento do conteúdo, um conjunto de dados aleatório será construído durante a aula para realização de nova análise descritiva.
+\
+Esta aula está disponível no [RPubs](http://rpubs.com/brennerbiasi/ENGD02_Desc_01) e no [GitHub](https://github.com/bbiasi/ENGD02/blob/master/Aula_2.Rmd).
+\
+Para pleno andamento da atividade, os discentes deverão verificar e, se necessário, instalar os seguintes pacotes:
+- `dplyr`;
+- `ggplot2`;
+- `reshape2`;
+- `WVPlots`; e
+_ `cowplot`.
 
 ## Primeiro Momento
 
@@ -153,3 +162,96 @@ medias <- medias %>%
                 "Variaveis" = variable,
                 "Media" = value)
 ```
+\
+Agora, vamos plotar nosso gráfico e iniciar nossa análise visual.
+\
+```{r, message=FALSE, warning=FALSE}
+medias %>% 
+  ggplot() +
+  geom_point(aes(x = Variaveis, y = Media))
+```
+\
+Qual informação podemos sintetizar a partir do gráfico? É possível melhorar?
+\
+```{r, message=FALSE, warning=FALSE}
+medias %>% 
+  ggplot() +
+  geom_point(aes(x = Variaveis, y = Media)) +
+  facet_wrap(~Especies) 
+# ~ => em funcao de ...
+
+medias %>% 
+  ggplot() +
+  geom_point(aes(x = Variaveis, y = Media)) +
+  facet_wrap(~Especies) +
+  theme(axis.text.x = element_text(angle = 90))
+
+medias %>% 
+  ggplot() +
+  geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
+             size = 4)
+
+medias %>% 
+  ggplot() +
+  geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
+             size = 4) +
+  geom_smooth(aes(x = Especies, y = Media))
+  
+```
+\
+Vamos comparar com nossa amostra de plantas iris?
+\
+Então vamos gerar este objeto para uso posterior.
+\
+```{r, message=FALSE, warning=FALSE}
+plot1 <- medias %>% 
+  ggplot() +
+  geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
+             size = 4) +
+  geom_smooth(aes(x = Especies, y = Media))
+```
+\
+Utilizando o *dataset* completo.
+\
+```{r, message=FALSE, warning=FALSE}
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, col = Species, shape = Species))
+```
+\
+Existe algum padrão visível? Há correlação? De que tipo?
+\
+```{r, message=FALSE, warning=FALSE}
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, col = Species, shape = Species)) +
+  geom_smooth(aes(x = Sepal.Length, y = Sepal.Width), method = "lm") +
+  facet_wrap(~Species)
+
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, col = Species, shape = Species)) +
+  geom_smooth(aes(x = Sepal.Length, y = Sepal.Width), method = "lm") +
+  facet_wrap(~Species, scales = "free")
+
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Petal.Length, col = Species, shape = Species)) +
+  geom_smooth(aes(x = Sepal.Length, y = Petal.Length), method = "lm") +
+  facet_wrap(~Species, scales = "free")
+```
+
+\
+E para plotar todos os plots?
+\
+```{r, message=FALSE, warning=FALSE}
+library(WVPlots) 
+
+PairPlot(iris,
+         colnames(iris)[1:4], 
+         title = "Matriz de dispersão - Iris",
+         group_var = "Species")
+
+plot2 <- PairPlot(iris,
+                  colnames(iris)[1:4], 
+                  title = "Matriz de dispersão - Iris",
+                  group_var = "Species")
+
+```
+
