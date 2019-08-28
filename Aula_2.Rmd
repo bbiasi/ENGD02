@@ -1,6 +1,6 @@
 ---
 title: "Aula 2"
-author: "Brenner Silva"
+author: "Brenner Silva e Marcello Pessoa"
 date: "22/08/2019"
 output: html_document
 ---
@@ -38,6 +38,7 @@ Para pleno andamento da atividade, os discentes deverão verificar e, se necess�
 - `ggplot2`;
 - `reshape2`;
 - `WVPlots`;
+- `car`;
 - `cowplot`; e
 - `GGally`.
 
@@ -191,7 +192,9 @@ medias %>%
 medias %>% 
   ggplot() +
   geom_point(aes(x = Especies, y = Media, shape = Variaveis, col = Variaveis), 
-             size = 4)
+             size = 4) +
+  geom_smooth(aes(x = Especies, y = Media))
+  
 ```
 \
 Vamos comparar com nossa amostra de plantas iris?
@@ -245,9 +248,10 @@ plot2 <- PairPlot(iris,
                   group_var = "Species")
 ```
 \
-Boxplot e histograma no `ggplot2`.
+Boxplot e Histograma no `ggplot2`.
 \
 ```{r, message=FALSE, warning=FALSE}
+
 df2 <- iris %>% 
   dplyr::filter(Species == "setosa")
 
@@ -267,8 +271,7 @@ hist_1 <- ggplot(df2) +
 
 library(cowplot)
 
-cowplot::plot_grid(hist_1, boxplot_1, nrow = 2,
-                   rel_heights = c(2,1),scale = 1,align = "hv")
+plot_grid(hist_1, boxplot_1, nrow = 2,rel_heights = c(2,1),scale = 1,align = "hv")
 
 ggplot(iris, aes(Sepal.Length, fill = Species)) + 
   geom_density(alpha = 0.5) +
@@ -276,5 +279,41 @@ ggplot(iris, aes(Sepal.Length, fill = Species)) +
   theme_minimal_hgrid(12)
 ```
 
+\
+E como podemos verificar a normalidade?
+\
 
+```{r, message=FALSE, warning=FALSE}
+library(GGally)
+ggpairs(data = iris, columns = 1:4, 
+        mapping = aes(color = Species))
+```
 
+```{r, message=FALSE, warning=FALSE}
+stest <- shapiro.test(iris$Petal.Width)
+stest$p.value
+```
+\
+E é possível gerar gráficos em 3D ou de superfícies?
+\
+```{r, message=FALSE, warning=FALSE}
+library(scatterplot3d)
+scatterplot3d(iris[, c(1, 3, 4)], color = as.numeric(iris$Species))
+
+scatterplot3d(iris[, c(1, 3, 4)], color = as.numeric(iris$Species),
+pch = 4, angle = 80)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(car)
+car::scatter3d(x = iris$Petal.Width, 
+               y = iris$Sepal.Length, 
+               z = iris$Petal.Length, 
+               groups = as.factor(iris$Species),
+               data = iris, 
+               grid = FALSE, fit = "smooth")
+```
+
+\
+
+\
