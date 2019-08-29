@@ -1,6 +1,6 @@
 ---
 title: "Aula 3"
-author: "Brenner Silva e Marcello Pessoa"
+author: "Brenner Silva"
 date: "22/08/2019"
 output: html_document
 ---
@@ -18,22 +18,114 @@ pre code, pre, code {
 # ENGD 02
 ## Plano de Aula
 
-# ENGD 02
-## Plano de Aula
+O presente material apresentado contempla a segunda aula prática de Estatística Descritiva, contemplando uma breve introdução a séries temporais (*time series*).
+\
 
-O presente material apresentado contempla a segunda aula prática de Estatística Descritiva, contemplando uma introdução a séries temporais (*time series*).
 \
 Para tal, será utilizado o *dataset* `AirPassengers`, que tem funcionalidade similar ao `iris`, porém estrutura de classe diferente (`ts`).
 \
-Esta aula está disponível no [RPubs](http://rpubs.com/brennerbiasi/ENGD02_Desc_01) e no [GitHub](https://github.com/bbiasi/ENGD02/blob/master/Aula_2.Rmd).
-\
-Para pleno andamento da atividade, os discentes deverão verificar e, se necessário, instalar os seguintes pacotes:
 
 \
+Esta aula está disponível no [RPubs](http://rpubs.com/brennerbiasi/intro_ts) e no [GitHub](https://github.com/bbiasi/ENGD02/blob/master/Aula_3.Rmd).
+\
+Para pleno andamento da atividade, os discentes deverão verificar e, se necessário, verificar a necessidade de intalação dos seguintes pacotes:
 
-São utilizados o banco de dados [*iris*](https://en.wikipedia.org/wiki/Iris_flower_data_set). Caso haja um tempo disponível para prolongação e maior detalhamento do conteúdo, um conjunto de dados aleatório será construído durante a aula para realização de nova análise descritiva.
+- `ggfortify`;
+- `ggplot2`.
+
+\
+Em um momento final, haverá, também, uma breve introdução para aplicação do pacote `dygraphs`.
 \
 
-# http://www.sthda.com/english/articles/32-r-graphics-essentials/128-plot-time-series-data-using-ggplot/
+## Série Temporal
 
-# http://r-statistics.co/Time-Series-Analysis-With-R.html
+Série temporal são nada mais que a colocação de observações, de modo **sequencial**, ao longo do **tempo**. As `ts` (*time series*) podem ser uni ou multivariadas, e apresentar influência de fatores inerentes (covariáveis).
+\
+
+\
+Este tipo de informação requer uma atenção a mais em relação ao `df`, pois, normalmente, é necessário verificar a adequação de **classe** (`class`) dos dados tabulados.
+\
+
+\
+No presente estudo prático, analisaremos apenas aspectos visuais de `ts`.
+
+### HANDS-ON
+
+Inicialmente iremos carregar nosso *dataset* `AirPassengers` e verificar sua classe.
+
+```{r, message=FALSE, warning=FALSE}
+data("AirPassengers")
+View(AirPassengers)
+class(AirPassengers)
+```
+\
+Observe também que a estrutura visual do objeto `AirPassengers` apresentada no Ambiente de Trabalho é diferente do modelo convencional de `dataframe`. 
+\
+
+\
+Contudo, perceba que se solicitado o *print* no console, há informação "oculta" no objeto.
+\
+
+\
+```{r, message=FALSE, warning=FALSE}
+print(AirPassengers)
+```
+\
+ôpa! Agora é possível entender um pouco melhor sobre esses dados. Os dados históricos são os totais mensais de passageiros (univariado) da companhia aérea Box & Jenkins, entre **1949 a 1960**.
+\
+
+\
+Mas, mesmo com outra classe é possível extrair informação? Sim, é possível. Entretanto é aconselhável o uso de pacotes específicos para `ts` ou que seja feito manipulação de dados. Por ora utilizaremos funções residentes no R, através do pacote `stats` e `base`.
+\
+
+\
+Em `ts`, uma análise inicial essencial é a verificação de *gaps*/*missing data* (dados faltantes - `NA`), e isto pode ser verificado, de maneira genérica, utilizando a função residente `is.na()`, onde contaremos (somaremos) a quantidade de observações que "é **NA**).
+\
+```{r, message=FALSE, warning=FALSE}
+sum(is.na(AirPassengers))
+```
+\
+A frequência de observações (meses), bem como a ordem dos meses, podem ser facilmente verificadas, respectivamente, com as funções `frequency` e `cycle`.
+\
+```{r, message=FALSE, warning=FALSE}
+stats::frequency(AirPassengers)
+stats::cycle(AirPassengers)
+```
+\
+Estatística básicas podem ser extraídas 
+\
+
+\
+Nessa aula utilizaremos, nesse momento, os pacotes `ggfortify` (que pode ser entendido como uma extensão do `ggplot2`, porém com simplificações) e o pacote `tseries`.
+\
+
+\
+O pacote `ggfortify` proporciona o uso da função `autoplot`, que permite realizar plots com boa estética e de modo bastante simplificado.
+\
+```{r, message=FALSE, warning=FALSE}
+library(ggfortify)
+autoplot(AirPassengers)
+autoplot(AirPassengers) + 
+  labs(x = "Data", y = "Número de Passageiros (1000's)",
+       title = "Passageiros de 1949 a 1961") 
+```
+\
+Perceba a simplicidade para realização deste plot, e também que ele aceita os mesmos comandos do pacote `ggplot2`.
+\
+
+\
+Entre os diversos tipos de estudos que podem ser concebidos utilizando a abordagem de séries temporais, podemos destacar as análises de sazonalidade, tendência, estacionariedade, ciclicidade e autocorrelação como os mais simples e essenciais. Contudo, nesta aula, abordaremos apenas a análise de sazonalidade e de tendências de modo visual.
+\
+
+\
+Para tal, será necessário decompor a série original de acordo com as análises. 
+\
+```{r, message=FALSE, warning=FALSE}
+decomposeAP1 <- stats::decompose(AirPassengers, "multiplicative")
+autoplot(decomposeAP1)
+
+decomposeAP2 <- stats::decompose(AirPassengers, "additive")
+autoplot(decomposeAP2)
+```
+
+
