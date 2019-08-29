@@ -39,8 +39,9 @@ Para pleno andamento da atividade, os discentes deverão verificar e, se necess�
 - `reshape2`;
 - `WVPlots`;
 - `car`;
-- `cowplot`; e
-- `GGally`.
+- `cowplot`;
+- `GGally`;
+- `ggplotgui`.
 
 ## Primeiro Momento
 
@@ -314,6 +315,17 @@ car::scatter3d(x = iris$Petal.Width,
                grid = FALSE, fit = "smooth")
 ```
 
+\
+E se desejado algo mais simples, que não envolva quase nada de programação? É possível utilizar o pacote `ggplotgui`, que através de uma [GUI](https://pt.wikipedia.org/wiki/Interface_gr%C3%A1fica_do_utilizador), você realizará boa parte de seus gráficos.
+\
+Contudo, vale a ressalva de que o uso do GUI não é recomendável para criação de gráficos que possam ser considerados de alta complexidade.
+\
+```{r message=FALSE, warning=FALSE}
+# library(ggplotgui)
+# library(shiny)
+# https://github.com/gertstulp/ggplotgui/
+# ggplotgui::ggplot_shiny(iris)
+```
 \
 
 \
