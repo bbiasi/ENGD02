@@ -18,6 +18,22 @@ pre code, pre, code {
 # ENGD 02
 ## Plano de Aula
 
+# ENGD 02
+## Plano de Aula
+
+O presente material apresentado contempla a segunda aula prática de Estatística Descritiva, contemplando uma introdução a séries temporais (*time series*).
+\
+Para tal, será utilizado o *dataset* `AirPassengers`, que tem funcionalidade similar ao `iris`, porém estrutura de classe diferente (`ts`).
+\
+Esta aula está disponível no [RPubs](http://rpubs.com/brennerbiasi/ENGD02_Desc_01) e no [GitHub](https://github.com/bbiasi/ENGD02/blob/master/Aula_2.Rmd).
+\
+Para pleno andamento da atividade, os discentes deverão verificar e, se necessário, instalar os seguintes pacotes:
+
+\
+
+São utilizados o banco de dados [*iris*](https://en.wikipedia.org/wiki/Iris_flower_data_set). Caso haja um tempo disponível para prolongação e maior detalhamento do conteúdo, um conjunto de dados aleatório será construído durante a aula para realização de nova análise descritiva.
+\
+
 # http://www.sthda.com/english/articles/32-r-graphics-essentials/128-plot-time-series-data-using-ggplot/
 
 # http://r-statistics.co/Time-Series-Analysis-With-R.html
