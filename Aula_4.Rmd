@@ -1,0 +1,225 @@
+---
+title: "Aula 4"
+author: "Brenner Silva"
+date: "05/09/2019"
+output: html_document
+---
+
+<style>
+pre code, pre, code {
+  white-space: pre !important;
+  overflow-x: scroll !important;
+  word-break: keep-all !important;
+  word-wrap: initial !important;
+}
+</style>
+
+
+# ENGD 02
+## Introdução a Probabilidade
+
+### QUESTÃO 01 - Distribuição Binomial
+Suponha que haja doze perguntas de múltipla escolha em um teste de aula de inglês. Cada pergunta tem cinco respostas possíveis e apenas uma delas está correta. Encontre a probabilidade de ter quatro ou menos respostas corretas se um aluno tentar responder todas as perguntas aleatoriamente.
+
+\
+
+#### RRESPOSTA
+Como apenas uma em cada cinco respostas possíveis está correta, a probabilidade de responder a uma pergunta corretamente aleatoriamente é $1/5 = 0.2$. Podemos encontrar a probabilidade de ter exatamente 4 respostas corretas por tentativas aleatórias da seguinte maneira.
+
+\
+```{r, message=FALSE, warning=FALSE}
+stats::dbinom(x = 4, size = 12, prob = 0.2)
+```
+
+\
+Para encontrar a probabilidade de ter quatro ou menos respostas corretas por tentativas aleatórias, aplicamos a função `dbinom` com $x=0,…,4$.
+\
+```{r, message=FALSE, warning=FALSE}
+stats::dbinom(x = 4, size = 12, prob = 0.2)
+```
+\
+```{r, message=FALSE, warning=FALSE}
+stats::dbinom(x = 0, size = 12, prob = 0.2) +
+  stats::dbinom(x = 1, size = 12, prob = 0.2) +
+  stats::dbinom(x = 2, size = 12, prob = 0.2) +
+  stats::dbinom(x = 3, size = 12, prob = 0.2) +
+  stats::dbinom(x = 4, size = 12, prob = 0.2)
+
+```
+\
+Como alternativa, podemos usar a função de probabilidade cumulativa para distribuição binomial `pbinom`.
+
+```{r, message=FALSE, warning=FALSE}
+stats::pbinom(q = 4, size = 12, prob = 0.2)
+resp_q1 <- stats::pbinom(q = 4, size = 12, prob = 0.2)
+
+cat(paste("A probabilidade de quatro ou menos perguntas respondidas de modo correto e", 
+           "aleatoriamente em um questionário de múltipla escolha de doze perguntas é de ", sep="\n"), 
+    paste0(round(resp_q1*100, 3), "%."))
+```
+\
+
+[*Fonte*](http://www.r-tutor.com/elementary-statistics/probability-distributions/binomial-distribution)
+\
+
+### QUESTÃO 02 - Distribuição Binomial
+Suponha que numa linha de produção a probabilidade de se obter uma peça defeituosa (sucesso) é $p = 0.1$. Toma-se uma amostra de 10 peças para serem inspecionadas. Qual a probabilidade de se obter: 
+
+1. Uma peça defeituosa? 
+
+2. Nenhuma peça defeituosa?
+
+3. Duas peças defeituosas?
+
+4. No mínimo duas peças defeituosas?
+
+5. No máximo duas peças defeituosas?
+
+\
+
+#### RESPOSTA
+
+1. QUESTÃO 02, PERGUNTA 01.
+```{r, message=FALSE, warning=FALSE}
+stats::dbinom(x = 1, size = 10, prob = 0.1)
+```
+\
+2. QUESTÃO 02, PERGUNTA 02.
+```{r, message=FALSE, warning=FALSE}
+stats::dbinom(x = 0, size = 10, prob = 0.1)
+```
+\
+3. QUESTÃO 02, PERGUNTA 03.
+```{r, message=FALSE, warning=FALSE}
+stats::dbinom(x = 2, size = 10, prob = 0.1)
+```
+\
+4. QUESTÃO 02, PERGUNTA 04.
+```{r, message=FALSE, warning=FALSE}
+1 - stats::pbinom(q = 1, size = 10, prob = 0.1)
+```
+\
+5. QUESTÃO 02, PERGUNTA 05.
+```{r, message=FALSE, warning=FALSE}
+stats::pbinom(q = 2, size = 10, prob = 0.1)
+```
+\
+[*Fonte*](http://www.portalaction.com.br/probabilidades/51-distribuicao-binomial)
+
+
+### QUESTÃO 03 - Distribuição Poisson
+Suponha que uma aplicação de tinta em um automóvel é feita de forma mecânica, e pode produzir defeitos de fabricação, como bolhas ou áreas mal pintadas, de acordo com uma variável aleatória $X$ que segue uma distribuição de Poisson de parâmetro $\lambda=1$. Suponha que sorteamos um carro ao acaso para que sua pintura seja inspecionada, qual a probabilidade de encontrarmos, pelo menos, $1$ defeito? E qual a probabilidade de encontrarmos de $2$ a $4$ defeitos?
+\
+
+#### RESPOSTA
+
+A probabilidade de encontrarmos pelo menos um defeito é dada por:
+```{r, message=FALSE, warning=FALSE}
+1 - stats::dpois(x = 1, lambda = 1)
+```
+\
+Já a probabilidade de encontrarmos entre 2 e 4 defeitos é de:
+```{r, message=FALSE, warning=FALSE}
+stats::dpois(x = 2, lambda = 1) +
+  stats::dpois(x = 3, lambda = 1) +
+  stats::dpois(x = 4, lambda = 1)
+```
+\
+[*Fonte*](http://www.portalaction.com.br/probabilidades/52-distribuicao-de-poisson)
+\
+
+### QUESTÃO 04 - Distribuição Poisson
+Considere um processo que têm uma taxa de $0.2$ defeitos por unidade. Qual a probabilidade de uma unidade qualquer apresentar:
+
+a) um defeito?
+b) zero defeito?
+\
+
+#### RESPOSTA
+
+QUESTÃO 04, PERGUNTA a.
+```{r, message=FALSE, warning=FALSE}
+stats::dpois(x = 1, lambda = 0.2)
+```
+\
+QUESTÃO 04, PERGUNTA b.
+```{r, message=FALSE, warning=FALSE}
+stats::dpois(x = 0, lambda = 0.2)
+```
+
+\
+[*Fonte*](http://www.portalaction.com.br/probabilidades/52-distribuicao-de-poisson)
+\
+
+### QUESTÃO 05 - Distribuição Normal
+Suponha que as notas dos testes de um vestibular se ajustem a uma distribuição normal. Além disso, a pontuação média no teste é $72$ e o desvio padrão é $15.2$. Qual é a porcentagem de alunos com $84$ ou mais notas no exame?
+\
+
+#### RESPOSTA
+
+Aplicamos a função `pnorm` da distribuição normal com média $72$ e desvio padrão $15.2$. Como procuramos a porcentagem de alunos com pontuação superior a $84$, estamos interessados na parte superior da distribuição normal (`lower.tail = FALSE`).
+
+```{r, message=FALSE, warning=FALSE}
+ pnorm(q = 84, mean = 72, sd = 15.2, lower.tail = FALSE)
+```
+\
+O percentual de alunos com $84$ ou mais notas no exame vestibular é de $21.5$%.
+\
+[*Fonte*](http://www.r-tutor.com/elementary-statistics/probability-distributions/normal-distribution)
+\
+
+### COMENTÁRIOS
+
+Essa introdução a probabilidade no R, permite constatar que realizar exercícios utilizando o *software* implica em simplicidade, rapidez e precisão. Deste modo, o discente pode otimizar seu tempo de estudo, reduzindo o tempo realizando exercícios a mão e podendo proporcionar maior ganho e percepção quanto a interpretação do problema.
+\
+As funções que lidam com distribuições de probabilidade em R têm um prefixo de uma letra que define o tipo de função que queremos usar. Esses argumentos são d, p, q e r. Eles se referem às funções densidade/massa, cumulativa, quantil e amostragem, respectivamente.
+\
+Em um exemplo de 20 lançamentos de moedas usando $p=0.7$  e traçar a função de densidade de $X\sim \mathcal{B} ({20,0.7})$. Primeiro, geramos um vetor com a sequência de números $1,2,… 20$ e iteramos a função sobre esses valores.
+
+```{r, message=FALSE, warning=FALSE}
+den <- stats::dbinom(1:20, 20, 0.7)
+plot(den, ylab = "Densidade", xlab = "Nº de sucessos")
+
+df <- data.frame(den = den,
+                 id = 1:length(den))
+library(ggplot2)
+ggplot(df) +
+  geom_line(aes(x = id, y = den)) +
+  geom_point(aes(x = id, y = den)) +
+  xlab("Nº de sucessos") +
+  ylab("Densidade")
+
+ggplot(df) +
+  geom_area(aes(x = id, y = den), fill = "blue") +
+  geom_point(aes(x = id, y = den)) +
+  xlab("Nº de sucessos") +
+  ylab("Densidade")
+```
+\
+Trabalhando com a manipulação de dados, é possível plotar a máxima densidade de uma maneira bem simples utilizando o pacote `dplyr` e funções residentes no R.
+\
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+
+df2 <- df %>% 
+  dplyr::arrange(dplyr::desc(den)) %>% 
+  dplyr::mutate(id_max = as.factor(c(1, rep(2, 19))))
+
+ggplot(df2) +
+  geom_area(aes(x = id, y = den), fill = "blue") +
+  geom_point(aes(x = id, y = den, col = id_max), size = 2) +
+  scale_color_manual(values = c("red", "black")) + 
+  xlab("Nº de sucessos") +
+  ylab("Densidade")
+
+```
+\
+Adaptado de:[*Fonte*](https://www.r-bloggers.com/probability-distributions-in-r/)
+\
+
+### CONSIDERAÇÕES FINAIS
+A aplicação de probabilidade em R, nesta parte introdutória, pode ser bastante simples e prática. Podemos obter resultados com excelente precisão numérica, rapidez e com uma linguagem computacional de baixa complexidade.
+\
+A utilização de ferramentas gráficas podem proporcionar melhor análise, e nos permite também expressar, de melhor maneira, os resultados obtidos. 
+\
